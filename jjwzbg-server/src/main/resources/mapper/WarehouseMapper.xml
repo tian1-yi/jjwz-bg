@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.server.mapper.WarehouseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nc.server.pojo.Warehouse">
+        <id column="id" property="id" />
+        <result column="address" property="address" />
+        <result column="postcode" property="postcode" />
+        <result column="phone" property="phone" />
+        <result column="name" property="name" />
+        <result column="title" property="title" />
+        <result column="county" property="countyId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, address, postcode, phone, name, title, county
+    </sql>
+    <select id="getAllWarehouse" resultType="com.nc.server.pojo.Province"></select>
+
+</mapper>

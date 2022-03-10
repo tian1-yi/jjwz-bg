@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.server.mapper.AdminMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nc.server.pojo.Admin">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="telephone" property="telephone" />
+        <result column="address" property="address" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="user_face" property="userFace" />
+        <result column="remark" property="remark" />
+        <result column="enabled" property="enabled" />
+        <result column="sex" property="sex" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, phone, telephone, address, username, password, user_face, remark, enabled, sex
+    </sql>
+
+    <resultMap id="AdminWithRole" type="com.nc.server.pojo.Admin" extends="BaseResultMap">
+        <collection property="roles" ofType="com.nc.server.pojo.Role">
+            <id column="rid" property="id" />
+            <result column="rname" property="name" />
+            <result column="rnameZh" property="nameZh" />
+        </collection>
+    </resultMap>
+
+    <select id="getAllAdmins" resultMap="AdminWithRole">
+        select
+        a.*,
+        r.id as rid,
+        r.`name` as rname,
+        r.name_zh as rnameZh
+        from
+        t_admin a
+        left join
+        t_admin_role ar on a.id = ar.admin_id
+        left join
+        t_role r on r.id = ar.rid
+        where
+        a.id != #{id}
+        <if test="null!=keywords and ''!=keywords">
+            and a.`name` like concat('%', #{keywords},'%')
+        </if>
+        order by a.id;
+    </select>
+
+
+
+    <resultMap id="AdminById" type="com.nc.server.pojo.Admin" extends="BaseResultMap">
+        <result column="warehouse_id" property="warehouseId"/>
+        <association property="warehouse" resultMap="WarehouseWithName" javaType="com.nc.server.pojo.Warehouse"/>
+        <collection property="roles" ofType="com.nc.server.pojo.Role">
+            <id property="id" column="rid"/>
+            <result column="rname" property="name" />
+            <result column="rnameZh" property="nameZh" />
+        </collection>
+
+<!--        <association property="warehouse" javaType="com.nc.server.pojo.Warehouse">-->
+<!--            <id column="warehouse_id" property="id"/>-->
+<!--            <result column="warehouse_name" property="name"/>-->
+<!--        </association>-->
+    </resultMap>
+
+    <resultMap id="WarehouseWithName" type="com.nc.server.pojo.Warehouse">
+        <id column="warehouse_id" property="id"/>
+        <result column="warehouse_name" property="name"/>
+    </resultMap>
+
+
+    <select id="getAdminById" resultMap="AdminById" >
+        select
+            a.*,
+            wa.warehouse_id,
+            r.id as rid,
+            r.`name` as rname,
+            r.name_zh as rnameZh,
+            w.name as warehouse_name
+        from
+            t_admin a,
+            t_admin_role ar,
+            t_role r,
+            t_warehouse_admin wa,
+            t_warehouse w
+        where wa.admin_id = a.id and a.id = ar.admin_id and a.id = #{id} and r.id = ar.rid and w.id = wa.warehouse_id;
+    </select>
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.server.mapper.ProvinceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nc.server.pojo.Province">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name
+    </sql>
+
+    <resultMap id="county2warhouse" type="com.nc.server.pojo.County">
+        <id column="county_id" property="id" />
+        <result column="county_name" property="name" />
+        <collection property="children" ofType="com.nc.server.pojo.Warehouse">
+            <id column="id" property="id" />
+            <result column="address" property="address"/>
+            <result column="postcode" property="postcode"/>
+            <result column="phone" property="phone" />
+            <result column="name" property="name" />
+            <result column="title" property="title" />
+        </collection>
+    </resultMap>
+
+    <resultMap id="city2county" type="com.nc.server.pojo.City">
+        <id column="city_id" property="id" />
+        <result column="city_name" property="name" />
+        <collection property="children" resultMap="county2warhouse">
+
+        </collection>
+    </resultMap>
+
+    <resultMap id="allWarehouses" type="com.nc.server.pojo.Province">
+        <id column="province_id" property="id" />
+        <result column="province_name" property="name"/>
+        <collection property="children" resultMap="city2county">
+        </collection>
+    </resultMap>
+
+    <select id="getAllWarehouse" resultMap="allWarehouses">
+        select
+            p.id as province_id,
+            p.name as province_name,
+            c.id as city_id,
+            c.name as city_name,
+            co.name as county_name,
+            w.*
+        from
+            t_province p right join t_city c on p.id = c.province_id
+                         right join t_county co on c.id = co.city_id
+                         right join t_warehouse w on w.county_id = co.id
+        order by p.id, c.id, co.id;
+    </select>
+
+</mapper>
