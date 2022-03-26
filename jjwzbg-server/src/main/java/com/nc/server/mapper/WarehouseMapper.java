@@ -17,4 +17,6 @@ import java.util.List;
 public interface WarehouseMapper extends BaseMapper<Warehouse> {
 
     List<Province> getAllWarehouse();
+
+    List<Warehouse> getWarehouse();
 }

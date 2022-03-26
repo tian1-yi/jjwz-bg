@@ -30,4 +30,9 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
 
         return warehouseMapper.getAllWarehouse();
     }
+
+    @Override
+    public List<Warehouse> getWarehouses() {
+        return warehouseMapper.getWarehouse();
+    }
 }

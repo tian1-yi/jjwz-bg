@@ -2,6 +2,7 @@ package com.nc.server.controller;
 
 
 import com.nc.server.pojo.Province;
+import com.nc.server.pojo.Warehouse;
 import com.nc.server.service.IProvinceService;
 import com.nc.server.service.IWarehouseService;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,10 +28,19 @@ public class WarehouseController {
     @Autowired
     private IProvinceService provinceService;
 
+    @Autowired
+    private IWarehouseService warehouseService;
+
     @ApiModelProperty(value = "获取所有仓库列表")
     @GetMapping("/system/admin/allWarehouses")
     public List<Province> getAllWarehouse() {
+
         return provinceService.getAllWarehouse();
     }
 
+    @ApiModelProperty(value = "获取所有仓库信息")
+    @GetMapping("/warehouse/basic")
+    public List<Warehouse> getWarehouses() {
+        return warehouseService.getWarehouses();
+    }
 }

@@ -19,4 +19,7 @@ public interface IWarehouseService extends IService<Warehouse> {
     List<Province> getAllWarehouse();
 
 
+    List<Warehouse> getWarehouses();
+
+
 }
