@@ -4,7 +4,10 @@ import com.nc.server.pojo.City;
 import com.nc.server.mapper.CityMapper;
 import com.nc.server.service.ICityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CityServiceImpl extends ServiceImpl<CityMapper, City> implements ICityService {
 
+    @Autowired
+    private CityMapper cityMapper;
+
+    @Override
+    public List<City> getCitysByProvinceId(String provinceId) {
+        return cityMapper.getCitysByProvinceId(provinceId);
+    }
 }

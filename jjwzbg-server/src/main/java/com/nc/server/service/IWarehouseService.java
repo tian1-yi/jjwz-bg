@@ -1,6 +1,8 @@
 package com.nc.server.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.nc.server.pojo.Province;
+import com.nc.server.pojo.RespPageBean;
 import com.nc.server.pojo.Warehouse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -20,6 +22,9 @@ public interface IWarehouseService extends IService<Warehouse> {
 
 
     List<Warehouse> getWarehouses();
+
+
+    RespPageBean getWarehouses(Integer currentPage, Integer size, Warehouse warehouse);
 
 
 }

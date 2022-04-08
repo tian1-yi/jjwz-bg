@@ -3,6 +3,8 @@ package com.nc.server.mapper;
 import com.nc.server.pojo.City;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 市表 Mapper 接口
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CityMapper extends BaseMapper<City> {
 
+    List<City> getCitysByProvinceId(String provinceId);
 }

@@ -1,6 +1,9 @@
 package com.nc.server.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nc.server.pojo.Province;
+import com.nc.server.pojo.RespPageBean;
 import com.nc.server.pojo.Warehouse;
 import com.nc.server.mapper.WarehouseMapper;
 import com.nc.server.service.IWarehouseService;
@@ -33,6 +36,15 @@ public class WarehouseServiceImpl extends ServiceImpl<WarehouseMapper, Warehouse
 
     @Override
     public List<Warehouse> getWarehouses() {
-        return warehouseMapper.getWarehouse();
+        return null;
     }
+
+    @Override
+    public RespPageBean getWarehouses(Integer currentPage, Integer size, Warehouse warehouse) {
+        Page<Warehouse> page = new Page<>(currentPage, size);
+        IPage<Warehouse> iPage = warehouseMapper.getWarehouse(page, warehouse);
+        return new RespPageBean(iPage.getTotal(), iPage.getRecords());
+    }
+
+
 }

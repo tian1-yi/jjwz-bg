@@ -4,57 +4,71 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.nc.server.pojo.Warehouse">
-        <id column="id" property="id" />
-        <result column="address" property="address" />
-        <result column="postcode" property="postcode" />
-        <result column="phone" property="phone" />
-        <result column="name" property="name" />
-        <result column="title" property="title" />
-        <result column="county_id" property="countyId" />
+        <id column="id" property="id"/>
+        <result column="address" property="address"/>
+        <result column="postcode" property="postcode"/>
+        <result column="phone" property="phone"/>
+        <result column="name" property="name"/>
+        <result column="title" property="title"/>
+        <result column="county_id" property="countyId"/>
     </resultMap>
 
     <resultMap id="WarehouseBasic" type="com.nc.server.pojo.Warehouse" extends="BaseResultMap">
         <association property="county" javaType="com.nc.server.pojo.County">
-            <result property="name" column="cname" />
+            <result property="name" column="cname"/>
         </association>
         <association property="city" javaType="com.nc.server.pojo.City">
-            <result property="name" column="ciname" />
+            <result property="name" column="ciname"/>
         </association>
         <association property="province" javaType="com.nc.server.pojo.Province">
-            <result property="name" column="pname" />
+            <result property="name" column="pname"/>
         </association>
         <association property="admin" javaType="com.nc.server.pojo.AdminInfo">
-            <result property="name" column="admin_name" />
+            <result property="name" column="admin_name"/>
             <result property="id" column="admin_id"/>
         </association>
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, address, postcode, phone, name, title, county
+        id
+        , address, postcode, phone, name, title, county
     </sql>
     <select id="getAllWarehouse" resultType="com.nc.server.pojo.Province"></select>
     <select id="getWarehouse" resultMap="WarehouseBasic">
-        select
-            w.*,
-            c.name as cname,
-            ci.name as ciname,
-            p.name as pname,
-            a.id as admin_id,
-            a.name as admin_name,
-            a.enabled as aenabled
-        from
-            t_warehouse w,
-            t_county c,
-            t_city ci,
-            t_province p,
-            t_warehouse_admin wa,
-            t_admin a
-        where
-            w.county_id = c.id
+        select w.*,
+               c.name    as cname,
+               ci.name   as ciname,
+               p.name    as pname,
+               a.id      as admin_id,
+               a.name    as admin_name,
+               a.enabled as aenabled
+        from t_warehouse w,
+             t_county c,
+             t_city ci,
+             t_province p,
+             t_warehouse_admin wa,
+             t_admin a
+        where w.county_id = c.id
           and c.city_id = ci.id
           and ci.province_id = p.id
           and w.id = wa.warehouse_id
-          and a.id = wa.admin_id order by w.id;
+          and a.id = wa.admin_id
+        <if test="null !=warehouse.title and '' != warehouse.title">
+            and w.title like concat("%", #{warehouse.title}, "%")
+        </if>
+        <if test="null !=warehouse.name and '' != warehouse.name">
+            and w.name like concat("%", #{warehouse.name}, "%")
+        </if>
+        <if test="null !=warehouse.countyName and '' != warehouse.countyName">
+            and w.countyName = #{warehouse.countyName}
+        </if>
+        <if test="null !=warehouse.cityName and '' != warehouse.cityName">
+            and w.ticityNametle = #{warehouse.cityName}
+        </if>
+        <if test="null !=warehouse.provinceName and '' != warehouse.provinceName">
+            and w.provinceName = #{warehouse.provinceName}
+        </if>
+        order by w.id
     </select>
 
 </mapper>

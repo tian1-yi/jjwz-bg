@@ -1,10 +1,7 @@
 package com.nc.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.nc.server.pojo.Admin;
-import com.nc.server.pojo.Menu;
-import com.nc.server.pojo.RespBean;
-import com.nc.server.pojo.Role;
+import com.nc.server.pojo.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -53,4 +50,6 @@ public interface IAdminService extends IService<Admin> {
     Admin getAdminById(Integer id);
 
 
+
+    List<AdminInfo> getAdminsByUserName(String name);
 }

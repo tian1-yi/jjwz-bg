@@ -48,11 +48,24 @@ public class Warehouse implements Serializable {
     private String title;
 
     @ApiModelProperty(value = "县id")
+    @TableField("county_id")
     private Integer countyId;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "县")
     private County county;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "县名字")
+    private String countyName;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "市名字")
+    private String cityName;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "省名字")
+    private String provinceName;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "市")
@@ -63,7 +76,11 @@ public class Warehouse implements Serializable {
     private Province province;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "管理员")
+    @ApiModelProperty(value = "管理员id")
+    private String adminId;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "管理员信息")
     private AdminInfo admin;
 
 }

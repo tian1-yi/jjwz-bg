@@ -115,4 +115,6 @@ public class AdminController {
     public RespBean updateAdminRole(Integer adminId, Integer[] rids) {
         return adminService.updateAdminRole(adminId, rids);
     }
+
+
 }

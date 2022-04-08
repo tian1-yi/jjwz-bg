@@ -1,16 +1,15 @@
 package com.nc.server.controller;
 
 
-import com.nc.server.pojo.Province;
-import com.nc.server.pojo.Warehouse;
+import com.nc.server.pojo.*;
+import com.nc.server.service.IAdminService;
 import com.nc.server.service.IProvinceService;
+import com.nc.server.service.IWarehouseAdminService;
 import com.nc.server.service.IWarehouseService;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +30,12 @@ public class WarehouseController {
     @Autowired
     private IWarehouseService warehouseService;
 
+    @Autowired
+    private IAdminService adminService;
+
+    @Autowired
+    private IWarehouseAdminService warehouseAdminService;
+
     @ApiModelProperty(value = "获取所有仓库列表")
     @GetMapping("/system/admin/allWarehouses")
     public List<Province> getAllWarehouse() {
@@ -40,7 +45,25 @@ public class WarehouseController {
 
     @ApiModelProperty(value = "获取所有仓库信息")
     @GetMapping("/warehouse/basic")
-    public List<Warehouse> getWarehouses() {
-        return warehouseService.getWarehouses();
+    public RespPageBean getWarehouses(@RequestParam(defaultValue = "1") Integer currentPage,
+                                      @RequestParam(defaultValue = "10") Integer size,
+                                      Warehouse warehouse) {
+        return warehouseService.getWarehouses(currentPage, size, warehouse);
+    }
+
+    @ApiOperation(value = "获取操作员名字")
+    @GetMapping("/adminName")
+    public List<AdminInfo> getAdminName(@RequestParam(defaultValue = "") String name) {
+        return adminService.getAdminsByUserName(name);
+
+    }
+
+    @ApiOperation(value = "添加仓库")
+    @PostMapping("/warehouse/add")
+    public RespBean addWarehouse(@RequestBody Warehouse warehouse) {
+        warehouseService.save(warehouse);
+        warehouseAdminService.save(new WarehouseAdmin().setWarehouseId(warehouse.getId()).setAdminId(Integer.parseInt(warehouse.getAdminId())));
+        System.out.println(warehouse);
+        return RespBean.success("添加成功");
     }
 }

@@ -112,4 +112,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return adminMapper.getAdminById(id);
     }
 
+    @Override
+    public List<AdminInfo> getAdminsByUserName(String name) {
+        return adminMapper.getAdminsByName(name);
+    }
+
 }

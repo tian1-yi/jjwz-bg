@@ -13,5 +13,8 @@
     <sql id="Base_Column_List">
         id, name, province_id
     </sql>
+    <select id="getCitysByProvinceId" resultType="com.nc.server.pojo.City" parameterType="java.lang.String">
+        select
+    </select>
 
 </mapper>

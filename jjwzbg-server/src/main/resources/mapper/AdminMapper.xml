@@ -89,5 +89,8 @@
             t_warehouse w
         where wa.admin_id = a.id and a.id = ar.admin_id and a.id = #{id} and r.id = ar.rid and w.id = wa.warehouse_id;
     </select>
+    <select id="getAdminsByName" resultType="com.nc.server.pojo.AdminInfo" parameterType="java.lang.String">
+        select t_admin.id, t_admin.name from t_admin where name like concat("%", "", "%");
+    </select>
 
 </mapper>

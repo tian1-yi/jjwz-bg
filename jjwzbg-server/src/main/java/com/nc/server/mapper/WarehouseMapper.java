@@ -1,8 +1,11 @@
 package com.nc.server.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nc.server.pojo.Province;
 import com.nc.server.pojo.Warehouse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,5 +21,5 @@ public interface WarehouseMapper extends BaseMapper<Warehouse> {
 
     List<Province> getAllWarehouse();
 
-    List<Warehouse> getWarehouse();
+    IPage<Warehouse> getWarehouse(Page<Warehouse> page, @Param("warehouse")Warehouse warehouse);
 }
