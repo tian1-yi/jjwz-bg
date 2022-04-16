@@ -28,6 +28,13 @@
             <result property="id" column="admin_id"/>
         </association>
     </resultMap>
+
+    <resultMap id="warehouseById" type="com.nc.server.pojo.Warehouse" extends="BaseResultMap">
+        <result property="cityName" column="cityName" />
+        <result property="countyName" column="countyName" />
+        <result property="provinceName" column="provinceName" />
+        <result property="adminName" column="adminName" />
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id
@@ -46,13 +53,13 @@
              t_county c,
              t_city ci,
              t_province p,
-             t_warehouse_admin wa,
+             t_manage_warehouse_admin mwa,
              t_admin a
         where w.county_id = c.id
           and c.city_id = ci.id
           and ci.province_id = p.id
-          and w.id = wa.warehouse_id
-          and a.id = wa.admin_id
+          and w.id = mwa.warehouse_id
+          and a.id = mwa.admin_id
         <if test="null !=warehouse.title and '' != warehouse.title">
             and w.title like concat("%", #{warehouse.title}, "%")
         </if>
@@ -69,6 +76,35 @@
             and w.provinceName = #{warehouse.provinceName}
         </if>
         order by w.id
+    </select>
+
+
+    <select id="getWarehouseById" resultMap="warehouseById">
+        select
+            w.*,
+            a.name as adminName,
+            c.name as countyName,
+            ci.name as cityName,
+            p.name as provinceName
+        from
+            t_warehouse w,
+            t_warehouse_admin wa,
+            t_admin a,
+            t_county c,
+            t_city ci,
+            t_province p
+        where
+            w.id = wa.warehouse_id
+          and
+            wa.admin_id = a.id
+          and
+            w.county_id = c.id
+          and
+            c.city_id = ci.id
+          and
+            ci.province_id = p.id
+          and
+            w.id = #{id}
     </select>
 
 </mapper>

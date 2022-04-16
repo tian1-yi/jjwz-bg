@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.server.mapper.OperationInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nc.server.pojo.OperationInfo">
+        <id column="id" property="id"/>
+        <result column="input_id" property="inputId"/>
+        <result column="input_time" property="inputTime"/>
+        <result column="ratify_id" property="ratifyId"/>
+        <result column="ratify_time" property="ratifyTime"/>
+        <result column="verify_id" property="verifyId"/>
+        <result column="verify_time" property="verifyTime"/>
+        <result column="status_id" property="statusId"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="service_type_id" property="serviceTypeId"/>
+        <result column="total_money" property="totalMoney"/>
+        <result column="remark" property="remark"/>
+        <result column="county_id" property="countyId"/>
+        <result column="address" property="address"/>
+        <result column="postcode" property="postcode"/>
+        <result column="phone" property="phone"/>
+        <result column="concat" property="concat"/>
+        <result column="fax" property="fax"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , input_id, input_time, ratify_id, ratify_time, verify_id, verify_time, status_id, warehouse_id, service_type_id, total_money, remark, couty_id, address, postcode, phone, concat, fax
+    </sql>
+
+    <resultMap id="operationInfoByPage1" type="com.nc.server.pojo.OperationInfo" extends="BaseResultMap">
+        <result column="cname" property="cname"/>
+        <result column="pname" property="pname"/>
+        <result column="ciname" property="ciname"/>
+        <result column="sname" property="sname"/>
+    </resultMap>
+
+    <select id="getAllOperationInfoByPage" resultMap="operationInfoByPage1">
+        select oi.*,
+               s.id    as sid,
+               s.name  as sname,
+               c.name  as cname,
+               ci.name as ciname,
+               p.name  as pname
+        from t_operation_info oi,
+             t_operation_material om,
+             t_status s,
+             t_county c,
+             t_city ci,
+             t_province p
+        where oi.id = om.id
+          and oi.status_id = s.id
+          and service_type_id = #{serveType}
+          and oi.county_id = c.id
+          and c.city_id = ci.id
+          and ci.province_id = p.id
+          and oi.input_id = #{adminId}
+          <if test="1 == statusType">
+              and oi.status_id in (1, 3, 5)
+          </if>
+        <if test="2 == statusType">
+            and oi.status_id in (2, 4, 6)
+        </if>
+    </select>
+
+    <select id="getAllOperationInfoByPage2" resultMap="operationInfoByPage1">
+        select oi.*,
+               s.id    as sid,
+               s.name  as sname,
+               c.name  as cname,
+               ci.name as ciname,
+               p.name  as pname
+        from t_operation_info oi,
+             t_operation_material om,
+             t_status s,
+             t_county c,
+             t_city ci,
+             t_province p
+        where oi.id = om.id
+          and oi.status_id = s.id
+          and service_type_id = 2
+          and oi.county_id = c.id
+          and c.city_id = ci.id
+          and ci.province_id = p.id
+          and oi.input_id = #{adminId}
+          and oi.status_id = 2
+    </select>
+    <select id="getAllWaitForVeritfy" resultMap="operationInfoByPage1">
+        select oi.*,
+               s.id    as sid,
+               s.name  as sname,
+               c.name  as cname,
+               ci.name as ciname,
+               p.name  as pname
+        from t_operation_info oi,
+             t_operation_material om,
+             t_status s,
+             t_county c,
+             t_city ci,
+             t_province p
+        where oi.id = om.id
+          and oi.status_id = s.id
+          and oi.county_id = c.id
+          and c.city_id = ci.id
+          and ci.province_id = p.id
+          and oi.warehouse_id = #{warehouseId}
+    </select>
+
+</mapper>

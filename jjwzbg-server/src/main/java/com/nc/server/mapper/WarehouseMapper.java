@@ -22,4 +22,6 @@ public interface WarehouseMapper extends BaseMapper<Warehouse> {
     List<Province> getAllWarehouse();
 
     IPage<Warehouse> getWarehouse(Page<Warehouse> page, @Param("warehouse")Warehouse warehouse);
+
+    Warehouse getWarehouseById(@Param("id") Integer id);
 }

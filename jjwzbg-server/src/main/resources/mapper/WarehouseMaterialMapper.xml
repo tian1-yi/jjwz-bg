@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.server.mapper.WarehouseMaterialMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nc.server.pojo.WarehouseMaterial">
+        <id column="id" property="id"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="material_id" property="materialId"/>
+        <result column="count" property="count"/>
+        <result column="price" property="price"/>
+        <result column="max" property="max"/>
+        <result column="min" property="min"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , warehouse_id, material_id, count, price, max, min
+    </sql>
+
+    <resultMap id="MaterialBaseResultMap" type="com.nc.server.pojo.Material">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="measure_id" property="measureId"/>
+        <result column="small_id" property="smallId"/>
+        <result column="price" property="price"/>
+        <result column="remark" property="remark"/>
+        <result column="size" property="size"/>
+    </resultMap>
+
+    <resultMap id="getByWarehouse" type="com.nc.server.pojo.Material" extends="MaterialBaseResultMap">
+        <result column="wprice" property="wprice"/>
+        <result column="count" property="count"/>
+        <result column="max" property="max"/>
+        <result column="min" property="min"/>
+        <result column="wmid" property="wmid" />
+    </resultMap>
+    <select id="getByWarehouse" resultType="com.nc.server.pojo.Material">
+        select m.*,
+               wm.count as count,
+wm.price as wprice,
+wm.max as max,
+wm.min as min,
+        wm.id as wmid
+        from
+            t_warehouse_material wm,
+            t_material m
+        where
+            wm.material_id = m.id
+          and
+            wm.warehouse_id = #{warehouseId}
+          and
+            m.small_id = #{smallId}
+    </select>
+
+</mapper>

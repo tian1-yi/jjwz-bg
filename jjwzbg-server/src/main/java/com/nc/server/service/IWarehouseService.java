@@ -27,4 +27,5 @@ public interface IWarehouseService extends IService<Warehouse> {
     RespPageBean getWarehouses(Integer currentPage, Integer size, Warehouse warehouse);
 
 
+    Warehouse getWarehouse();
 }

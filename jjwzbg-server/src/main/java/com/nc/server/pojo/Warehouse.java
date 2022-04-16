@@ -80,6 +80,10 @@ public class Warehouse implements Serializable {
     private String adminId;
 
     @TableField(exist = false)
+    @ApiModelProperty(value = "管理员姓名")
+    private String adminName;
+
+    @TableField(exist = false)
     @ApiModelProperty(value = "管理员信息")
     private AdminInfo admin;
 

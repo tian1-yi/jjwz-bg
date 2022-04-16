@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.server.mapper.MaterialMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nc.server.pojo.Material">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="measure_id" property="measureId" />
+        <result column="small_id" property="smallId" />
+        <result column="price" property="price" />
+        <result column="remark" property="remark" />
+        <result column="size" property="size" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, measure_id, big_id, small_id, max, min, price, remark, size
+    </sql>
+
+    <resultMap id="materialBasic" type="com.nc.server.pojo.Material" extends="BaseResultMap">
+        <result column="st_id" property="stId"/>
+        <result column="st_name" property="stName" />
+        <result column="bt_id" property="btId" />
+        <result column="bt_name" property="btName" />
+        <result column="me_id" property="meId" />
+        <result column="me_name" property="meName" />
+
+    </resultMap>
+
+    <select id="getWarehouse" resultMap="materialBasic">
+        select
+            m.*,
+            st.id as st_id,
+            st.name as st_name,
+            bt.id as bt_id,
+            bt.name as bt_name,
+            me.id as me_id,
+            me.name as me_name
+        from
+            t_material m,
+            t_small_type st,
+            t_big_type bt,
+            t_measure me
+        where m.small_id = st.id and st.big_id = bt.id and m.measure_id = me.id order by m.id
+    </select>
+
+</mapper>

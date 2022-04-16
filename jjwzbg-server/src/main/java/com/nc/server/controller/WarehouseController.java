@@ -2,10 +2,7 @@ package com.nc.server.controller;
 
 
 import com.nc.server.pojo.*;
-import com.nc.server.service.IAdminService;
-import com.nc.server.service.IProvinceService;
-import com.nc.server.service.IWarehouseAdminService;
-import com.nc.server.service.IWarehouseService;
+import com.nc.server.service.*;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,9 @@ public class WarehouseController {
 
     @Autowired
     private IAdminService adminService;
+
+    @Autowired
+    private IManageWarehouseAdminService manageWarehouseAdminService;
 
     @Autowired
     private IWarehouseAdminService warehouseAdminService;
@@ -62,8 +62,16 @@ public class WarehouseController {
     @PostMapping("/warehouse/add")
     public RespBean addWarehouse(@RequestBody Warehouse warehouse) {
         warehouseService.save(warehouse);
-        warehouseAdminService.save(new WarehouseAdmin().setWarehouseId(warehouse.getId()).setAdminId(Integer.parseInt(warehouse.getAdminId())));
+//        warehouseAdminService.save(new WarehouseAdmin().setWarehouseId(warehouse.getId()).setAdminId(Integer.parseInt(warehouse.getAdminId())));
+        manageWarehouseAdminService.save(new ManageWarehouseAdmin().setWarehouseId(warehouse.getId()).setAdminId(Integer.parseInt(warehouse.getAdminId())));
         System.out.println(warehouse);
         return RespBean.success("添加成功");
     }
+
+    @GetMapping("/warehouse/get")
+    public Warehouse getWarehouse() {
+        return warehouseService.getWarehouse();
+    }
+
+
 }
